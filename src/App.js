@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MovieInfo from './MovieInfo'
 import './App.css'
 
 /*
@@ -269,7 +270,12 @@ class App extends Component {
       // let's call our fetch and then use our request string
       fetch(this.state.searchURL) // RETURNS A PROMISE
         .then(response => response.json())
-        .then(movie => console.log(movie))
+        .then(movie => {
+          // save this to our state...WHY?
+          this.setState({
+            movieData: movie
+          })
+        })
         .catch(error => console.log(error))
     })
   }
@@ -289,6 +295,8 @@ class App extends Component {
           />
           <button type="submit">Submit</button>
         </form>
+
+        <MovieInfo movie={this.state.movieData} />
       </div>
     );
   }
