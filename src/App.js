@@ -243,7 +243,7 @@ class App extends Component {
   // Note: eventually we will contatenate baseURL + apiKey + query + movieTitle
 
   handleChange = (event) => {
-    console.log("Searching for this Title: ", event.target.value)
+    // console.log("Searching for this Title: ", event.target.value)
     // Setting state - this.setState
     this.setState({
       movieTitle: event.target.value
@@ -255,8 +255,23 @@ class App extends Component {
     // must do in forms when handling submit
     event.preventDefault()
 
-    console.log("We are inside handleSubmit. This is the request URL we are sending to OMDB")
-    console.log(this.state.baseUrl + this.state.apiKey + this.state.query)
+    // console.log("We are inside handleSubmit. This is the request URL we are sending to OMDB")
+    // console.log(this.state.baseUrl + this.state.apiKey + this.state.query + this.state.movieTitle)
+
+    // this.setState CAN actually take in TWO arguments
+    // first argument is an OBJECT with us updating our state
+    // second argument lets us do a CALLBACK - a function call within a function
+    // ONLY after we setState to searchURL THEN we are going to invoke/call our second argument
+    // setState = asynchronous
+    this.setState({
+      searchURL: this.state.baseUrl + this.state.apiKey + this.state.query + this.state.movieTitle
+    }, () => {
+      // let's call our fetch and then use our request string
+      fetch(this.state.searchURL) // RETURNS A PROMISE
+        .then(response => response.json())
+        .then(movie => console.log(movie))
+        .catch(error => console.log(error))
+    })
   }
 
   render() {
